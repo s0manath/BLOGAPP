@@ -8,27 +8,34 @@
 <body>
     <div class="container">
         <h2>Register</h2>
-        <form action="#" th:action="@{/register}" method="post">
+
+        <!-- Display error message if any -->
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:object="${regform}" th:action="@{/register}" method="post">
             <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" name="firstname" required>
+            <input type="text" th:field="*{firstname}" id="firstname" required>
 
             <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" required>
+            <input type="text" th:field="*{lastname}" id="lastname" required>
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" th:field="*{email}" id="email" required>
 
             <label for="password">Password:</label>
             <div class="password-wrapper">
-                <input type="password" id="password" name="password" required>
-                <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility()"></i>
-            </div>
+    <input type="password" id="password" required>
+    <i class="fas fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
+</div>
+
 
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
     </div>
 
-    <script src="/js/regi.js">   </script>
+    <script src="/js/regi.js"></script>
 </body>
 </html>

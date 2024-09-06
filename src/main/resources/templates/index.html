@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Posts</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- Add your CSS file here -->
+    <style>
+        /* Basic reset */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .header, .footer {
+            background-color: #333;
+            color: #fff;
+            padding: 15px 0;
+            text-align: center;
+        }
+        .header nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+        .header .app-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+            margin-right: auto;
+        }
+        .header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .header a:hover {
+            background-color: #555;
+        }
+        .content {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .content h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .post-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .post-list li {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fafafa;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .post-title {
+            font-size: 1.75em;
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .post-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+        .post-summary {
+            font-size: 1em;
+            color: #555;
+        }
+        .post-summary a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .post-summary a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <nav>
+            <a href="#" class="app-name">Tech Trending Blog</a>
+            <a href="#" th:href="@{/}">All Posts</a>
+            <a href="#" th:href="@{/login}">Login</a>
+            <a href="#" th:href="@{/register}">Register</a>
+        </nav>
+    </div>
+
+    <div class="content">
+        <h1>All Posts</h1>
+        <ul class="post-list">
+            <!-- Example post item -->
+            <li>
+                <h2 class="post-title">Post Title 1</h2>
+                <p class="post-date">September 1, 2024</p>
+                <p class="post-summary">This is a summary of the first post. <a href="#">Read more</a></p>
+            </li>
+            <!-- Repeat similar <li> elements for each post -->
+            <li>
+                <h2 class="post-title">Post Title 2</h2>
+                <p class="post-date">September 2, 2024</p>
+                <p class="post-summary">This is a summary of the second post. <a href="#">Read more</a></p>
+            </li>
+            <!-- End of example posts -->
+        </ul>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Somanath. All rights reserved.</p>
+    </div>
+</body>
+</html>
