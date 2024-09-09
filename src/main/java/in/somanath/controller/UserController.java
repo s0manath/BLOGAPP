@@ -13,12 +13,16 @@ import in.somanath.service.UserService;
 import in.somanath.service.exception.EmailAlreadyExistsException;
 import in.somanath.service.exception.InvalidLoginException;
 import in.somanath.service.exception.InvalidPasswordException;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private HttpSession session;
 	
 	@GetMapping("/register")
 	public String viewRegistrationPage(Model model) {
@@ -51,27 +55,26 @@ public class UserController {
 		return"Login";
 	}
 	
-	 @PostMapping("/login")
-	    public String loginUser(@ModelAttribute("loginform") LoginForm loginform, Model model) {
-	        try {
-	            boolean isAuthenticated = userService.authenticateUser(loginform.getEmail(), loginform.getPassword());
-	            if (isAuthenticated) {
-	                return "redirect:/dashboard"; // Redirect to the dashboard or home page after successful login
-	            } else {
-	                model.addAttribute("error", "Invalid email or password");
-	                return "Login";
-	            }
-	        } catch (InvalidLoginException e) {
-	            model.addAttribute("error", e.getMessage());
+	@PostMapping("/login")
+	public String loginUser(@ModelAttribute("loginform") LoginForm loginform, Model model) {
+	    try {
+	        // Assuming authenticateUser returns the authenticated user's ID
+	        Integer userId = userService.authenticateUser(loginform.getEmail(), loginform.getPassword());
+             System.out.println(userId);
+	        if (userId != null) {  // If the user is authenticated and the ID is not null
+	            session.setAttribute("userId", userId);  // Set userId in session
+	            return "redirect:/dashboard";  // Redirect to dashboard
+	        } else {
+	            model.addAttribute("error", "Invalid email or password");
 	            return "Login";
 	        }
+	    } catch (InvalidLoginException e) {
+	        model.addAttribute("error", e.getMessage());
+	        return "Login";
 	    }
-	
-	@PostMapping("/dashbord")
-	public String dashbordUnique() {
-		
-		
-		return "Dashbord";
 	}
+
+	
+	
 
 }

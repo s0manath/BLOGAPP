@@ -36,7 +36,7 @@ body {
         input[type="text"],
         input[type="email"],
         input[type="password"] {
-            width: 100%;
+            width: 93%;
             padding: 12px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
@@ -64,10 +64,10 @@ body {
 
         .toggle-password {
             position: absolute;
-            right: 10px;
-            top: 10px;
+            right: 15px;
+            top: 15px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 14px;
             color: #888;
         }
 

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-to-dashboard {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-to-dashboard a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .back-to-dashboard a:hover {
+            color: #0056b3;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Edit Post</h1>
+    </header>
+
+    <div class="container">
+        <!-- Display error message if any -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <!-- Edit Post Form -->
+        <form action="/posts/edit" method="post">
+            <!-- Hidden field to pass the post ID -->
+            <input type="hidden" name="postId" th:value="${postForm.postId}"/>
+
+            <!-- Title Input -->
+            <div class="form-group">
+                <label for="title">Post Title:</label>
+                <input type="text" id="title" name="title" th:value="${postForm.title}" required>
+            </div>
+
+            <!-- Description Input -->
+            <div class="form-group">
+                <label for="description">Post Description:</label>
+                <input type="text" id="description" name="description" th:value="${postForm.description}" required>
+            </div>
+
+            <!-- Content Input -->
+            <div class="form-group">
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" rows="10" required th:text="${postForm.content}"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Update Post</button>
+            </div>
+        </form>
+
+        <div class="back-to-dashboard">
+            <a href="/dashboard">Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -10,5 +10,5 @@ public interface UserService {
 
 	void saveUser(RegistrationForm regform) throws EmailAlreadyExistsException, InvalidPasswordException;;
 	
-	 boolean authenticateUser(String email, String password) throws InvalidLoginException;
+	 Integer authenticateUser(String email, String password) throws InvalidLoginException;
 }

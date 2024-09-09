@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav {
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav h1 {
+            font-size: 32px;
+            margin: 0;
+        }
+
+        nav h1 a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+            font-weight: 600;
+        }
+
+        h2 span {
+            color: #007bff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f1f3f5;
+        }
+
+        table tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1><a href="/">Tech Trending Blog</a></h1>
+        <ul>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/newpost">New Post</a></li>
+            <li><a href="/comments">Comments</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome, <span th:text="${dashboardData.user.firstname}"></span>!</h2>
+        <h3>Your Posts</h3>
+
+        <!-- Display message if there are no posts -->
+        <div th:if="${#lists.isEmpty(dashboardData.posts)}">
+            <p>You don't have any posts yet.</p>
+        </div>
+
+        <!-- Display posts in table -->
+        <table th:if="${!#lists.isEmpty(dashboardData.posts)}">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Created On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="post : ${dashboardData.posts}">
+                    <td th:text="${post.postId}"></td>
+                    <td th:text="${post.title}"></td>
+                    <td th:text="${post.description}"></td>
+                    <td th:text="${post.createdOn}"></td>
+                    <td>
+                        <a th:href="@{/posts/edit/{id}(id=${post.postId})}" class="btn">Edit</a>
+                        <form th:action="@{/posts/delete}" method="post" style="display:inline;">
+                            <input type="hidden" name="postId" th:value="${post.postId}" />
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
