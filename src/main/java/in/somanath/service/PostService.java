@@ -25,7 +25,6 @@ public interface PostService {
 
 	Post getPostById(Integer postId);
 	
-	List<Post> findAllPostsId(Integer userId);
 
 	
 	

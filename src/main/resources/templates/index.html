@@ -4,7 +4,6 @@
 <head>
 	<title>All Posts</title>
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-	<!-- FontAwesome for Icons -->
 	<link rel="stylesheet" href="/css/style.css"> <!-- Add your CSS file here -->
 	<style>
 		/* Basic reset */
@@ -63,6 +62,20 @@
 			text-align: center;
 		}
 
+		/* Search bar styles */
+		.search-bar {
+			margin-bottom: 20px;
+			text-align: center;
+		}
+
+		.search-bar input[type="text"] {
+			padding: 10px;
+			width: 300px;
+			border: 1px solid #ced4da;
+			border-radius: 4px;
+			font-size: 16px;
+		}
+
 		.post-list {
 			list-style-type: none;
 			padding: 0;
@@ -117,20 +130,50 @@
 
 	<div class="content">
 		<h1>All Posts</h1>
-		<ul class="post-list" th:each="post : ${posts}">
-			<li>
+		
+		<!-- Search bar -->
+		<div class="search-bar">
+			<input type="text" id="searchQuery" placeholder="Search posts..." onkeyup="filterPosts()">
+		</div>
+
+		<!-- Post list -->
+		<ul class="post-list" id="postList">
+			<li th:each="post : ${posts}">
 				<h2 class="post-title" th:text="${post.title}"></h2>
 				<p class="post-date" th:text="${post.createdOn}"></p>
 				<p class="post-summary" th:text="${post.description}"></p>
 				<a th:href="@{/posts/{postId}(postId=${post.postId})}">Read more</a>
 			</li>
 		</ul>
-
 	</div>
 
 	<div class="footer">
 		<p>&copy; 2024 Somanath. All rights reserved.</p>
 	</div>
+
+	<!-- JavaScript for filtering posts -->
+	<script>
+		function filterPosts() {
+			// Get the search query
+			const query = document.getElementById('searchQuery').value.toLowerCase();
+			
+			// Get all the post elements
+			const posts = document.getElementById('postList').getElementsByTagName('li');
+			
+			// Loop through the posts and filter based on the search query
+			for (let i = 0; i < posts.length; i++) {
+				let postTitle = posts[i].getElementsByClassName('post-title')[0].innerText.toLowerCase();
+				let postSummary = posts[i].getElementsByClassName('post-summary')[0].innerText.toLowerCase();
+
+				// Check if the title or summary matches the search query
+				if (postTitle.includes(query) || postSummary.includes(query)) {
+					posts[i].style.display = ""; // Show matching post
+				} else {
+					posts[i].style.display = "none"; // Hide non-matching post
+				}
+			}
+		}
+	</script>
 </body>
 
 </html>

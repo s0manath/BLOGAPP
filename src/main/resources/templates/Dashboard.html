@@ -70,6 +70,19 @@
             color: #007bff;
         }
 
+        .search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -143,6 +156,11 @@
         <h2>Welcome, <span th:text="${dashboardData.user.firstname}"></span>!</h2>
         <h3>Your Posts</h3>
 
+        <!-- Search bar for posts -->
+        <div class="search-bar">
+            <input type="text" id="searchQuery" placeholder="Search your posts..." onkeyup="filterPosts()">
+        </div>
+
         <!-- Display message if there are no posts -->
         <div th:if="${#lists.isEmpty(dashboardData.posts)}">
             <p>You don't have any posts yet.</p>
@@ -159,11 +177,11 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="postTableBody">
                 <tr th:each="post : ${dashboardData.posts}">
                     <td th:text="${post.postId}"></td>
-                    <td th:text="${post.title}"></td>
-                    <td th:text="${post.description}"></td>
+                    <td th:text="${post.title}" class="post-title"></td>
+                    <td th:text="${post.description}" class="post-description"></td>
                     <td th:text="${post.createdOn}"></td>
                     <td>
                         <a th:href="@{/posts/edit/{id}(id=${post.postId})}" class="btn">Edit</a>
@@ -176,5 +194,30 @@
             </tbody>
         </table>
     </div>
+
+    <!-- JavaScript for filtering posts -->
+    <script>
+        function filterPosts() {
+            // Get the search query
+            const query = document.getElementById('searchQuery').value.toLowerCase();
+            
+            // Get all rows from the table body
+            const posts = document.getElementById('postTableBody').getElementsByTagName('tr');
+            
+            // Loop through each row (post)
+            for (let i = 0; i < posts.length; i++) {
+                // Get post title and description text
+                let postTitle = posts[i].getElementsByClassName('post-title')[0].innerText.toLowerCase();
+                let postDescription = posts[i].getElementsByClassName('post-description')[0].innerText.toLowerCase();
+
+                // Check if the title or description matches the search query
+                if (postTitle.includes(query) || postDescription.includes(query)) {
+                    posts[i].style.display = ""; // Show matching post
+                } else {
+                    posts[i].style.display = "none"; // Hide non-matching post
+                }
+            }
+        }
+    </script>
 </body>
 </html>
