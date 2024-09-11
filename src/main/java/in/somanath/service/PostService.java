@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import in.somanath.binding.DashbordResponse;
 import in.somanath.binding.PostForm;
+import in.somanath.entity.Comment;
 import in.somanath.entity.Post;
 
 @Service
@@ -24,6 +25,8 @@ public interface PostService {
 	List<Post> findAllPosts();
 
 	Post getPostById(Integer postId);
+
+	List<Comment> getCommentsById(Integer postId) ;
 	
 
 	

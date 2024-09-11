@@ -127,6 +127,12 @@
             border-radius: 4px;
             border: 1px solid #c3e6cb;
         }
+
+        .comment-content {
+            max-width: 500px; /* Adjust as needed */
+            overflow-wrap: break-word; /* Handle long words */
+            white-space: pre-wrap; /* Preserve spaces and new lines */
+        }
     </style>
 </head>
 <body>
@@ -161,13 +167,10 @@
             <tbody>
                 <tr th:each="comment : ${comments}">
                     <td th:text="${comment.post.title}"></td>
-                    <td th:text="${comment.content}"></td>
+                    <td class="comment-content" th:text="${comment.content}"></td>
                     <td th:text="${#temporals.format(comment.createdOn, 'yyyy-MM-dd')}"></td>
                     <td>
-                        <form th:action="@{/comments/delete}" method="post" style="display:inline;">
-                            <input type="hidden" name="commentId" th:value="${comment.commentId}" />
-                            <button type="submit" class="btn btn-delete">Delete</button>
-                        </form>
+                        <a th:href="@{/comments/deleteComment/{commentId}(commentId=${comment.commentId})}" class="btn btn-delete">Delete</a>
                     </td>
                 </tr>
             </tbody>

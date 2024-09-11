@@ -8,7 +8,7 @@ import in.somanath.service.exception.InvalidPasswordException;
 
 public interface UserService {
 
-	void saveUser(RegistrationForm regform) throws EmailAlreadyExistsException, InvalidPasswordException;;
+	void saveUser(RegistrationForm regform) throws EmailAlreadyExistsException, InvalidPasswordException;
 	
 	 Integer authenticateUser(String email, String password) throws InvalidLoginException;
 }

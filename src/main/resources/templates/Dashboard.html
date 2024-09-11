@@ -3,6 +3,7 @@
 <head>
     <title>Dashboard</title>
     <style>
+        /* Styles for the page */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f0f2f5;
@@ -178,14 +179,16 @@
                 </tr>
             </thead>
             <tbody id="postTableBody">
-                <tr th:each="post : ${dashboardData.posts}">
-                    <td th:text="${post.postId}"></td>
+                <tr th:each="post, iterStat : ${dashboardData.posts}">
+                    <td th:text="${iterStat.index + 1}"></td> <!-- Sequential ID starting from 1 -->
                     <td th:text="${post.title}" class="post-title"></td>
                     <td th:text="${post.description}" class="post-description"></td>
                     <td th:text="${post.createdOn}"></td>
                     <td>
+                        <!-- Use the real ID for operations -->
                         <a th:href="@{/posts/edit/{id}(id=${post.postId})}" class="btn">Edit</a>
                         <form th:action="@{/posts/delete}" method="post" style="display:inline;">
+                            <!-- Hidden field for the real post ID -->
                             <input type="hidden" name="postId" th:value="${post.postId}" />
                             <button type="submit" class="btn btn-delete">Delete</button>
                         </form>

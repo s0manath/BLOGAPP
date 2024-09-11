@@ -1,168 +1,262 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<title>Post Details</title>
-	<link rel="stylesheet" href="/css/style.css"> <!-- Optional CSS file for additional styling -->
-	<style>
-		body {
-			font-family: 'Arial', sans-serif;
-			background-color: #f4f4f9;
-			margin: 0;
-			padding: 0;
-			color: #333;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title}">Post Details</title>
+    
+    <!-- External Stylesheet or Embedded CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f5;
+            color: #444;
+            margin: 0;
+            padding: 20px;
+        }
 
-		.container {
-			max-width: 900px;
-			margin: 50px auto;
-			padding: 20px;
-			background-color: white;
-			border-radius: 10px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-		}
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-		h1 {
-			font-size: 2.5em;
-			color: #2c3e50;
-			margin-bottom: 10px;
-		}
+        h1, h2 {
+            color: #2c3e50;
+        }
 
-		.post-meta {
-			color: #7f8c8d;
-			font-size: 0.9em;
-			margin-bottom: 30px;
-		}
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 0.3em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
 
-		.content {
-			font-size: 1.2em;
-			line-height: 1.8;
-			color: #34495e;
-		}
+        p {
+            font-size: 1.2em;
+            line-height: 1.7em;
+            margin: 10px 0;
+        }
 
-		.content img {
-			max-width: 100%;
-			height: auto;
-			border-radius: 10px;
-			margin: 20px 0;
-		}
+        .post-details {
+            margin-bottom: 30px;
+        }
 
-		.content blockquote {
-			font-style: italic;
-			background-color: #ecf0f1;
-			border-left: 4px solid #3498db;
-			margin: 20px 0;
-			padding: 15px;
-			border-radius: 5px;
-		}
+        .post-content {
+            margin-top: 25px;
+        }
 
-		.back-btn {
-			display: inline-block;
-			margin-top: 30px;
-			padding: 10px 20px;
-			background-color: #3498db;
-			color: white;
-			text-decoration: none;
-			border-radius: 5px;
-			transition: background-color 0.3s ease;
-		}
+        .post-content h2 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
 
-		.back-btn:hover {
-			background-color: #2980b9;
-		}
+        .post-content p {
+            overflow-wrap: break-word; /* Break long words within the paragraph */
+            white-space: pre-wrap; /* Preserve spaces and new lines */
+        }
 
-		.comment-section {
-			margin-top: 40px;
-			border-top: 1px solid #ddd;
-			padding-top: 20px;
-		}
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
 
-		.comment-section h2 {
-			margin-bottom: 20px;
-			color: #2c3e50;
-		}
+        .back-button:hover {
+            background-color: #1a242f;
+        }
 
-		.comment-section form {
-			display: flex;
-			flex-direction: column;
-		}
+        .comment-section {
+            margin-top: 40px;
+        }
 
-		.comment-section label {
-			margin-bottom: 5px;
-			color: #2c3e50;
-		}
+        .comment-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #e74c3c;
+        }
 
-		.comment-section input,
-		.comment-section textarea {
-			padding: 7px;
-			margin-bottom: 15px;
-			border-radius: 5px;
-			border: 1px solid #ccc;
-			font-size: 1em;
-			width: 100%;
-		}
+        .comment-section ul {
+            list-style: none;
+            padding: 0;
+        }
 
-		.comment-section textarea {
-			min-height: 100px;
-			resize: vertical;
-		}
+        .comment-section li {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            word-wrap: break-word; /* Ensure long words break and don't overflow */
+            overflow: hidden; /* Hide overflow to manage large content */
+        }
 
-		.comment-section button {
-			align-self: flex-start;
-			padding: 10px 20px;
-			background-color: #3498db;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			transition: background-color 0.3s ease;
-		}
+        .comment-section li p {
+            overflow-wrap: break-word; /* Break long words within the paragraph */
+            white-space: pre-wrap; /* Preserve spaces and new lines */
+            max-height: 300px; /* Limit the height of the comment box */
+            overflow-y: auto; /* Add scroll if content exceeds max-height */
+        }
 
-		.comment-section button:hover {
-			background-color: #2980b9;
-		}
+        .comment-section li:hover {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+        }
 
-		@media (max-width: 768px) {
-			.container {
-				padding: 15px;
-			}
+        .comment-section li strong {
+            font-size: 1.3em;
+            color: #34495e;
+        }
 
-			h1 {
-				font-size: 2em;
-			}
-		}
-	</style>
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 15px 0;
+        }
+
+        .no-comments {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .add-comment {
+            margin-top: 40px;
+        }
+
+        .add-comment h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #27ae60;
+        }
+
+        .add-comment form {
+            padding: 25px;
+            border-radius: 12px;
+            background-color: #f8f9fa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .add-comment label {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .add-comment input, .add-comment textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 15px;
+            background-color: #fff;
+        }
+
+        .add-comment button {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-comment button:hover {
+            background-color: #2980b9;
+        }
+
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .add-comment button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-
 <body>
-	<div class="container">
-		<h1 th:text="${post.title}"></h1>
-		<p class="post-meta">Posted on <span th:text="${post.createdOn}"></span></p>
 
-		<div class="content" th:utext="${post.content}"></div> <!-- Display post content as raw HTML -->
+    <div class="container">
+        <!-- Post Details Section -->
+        <div class="post-details">
+            <h1 th:text="${post.title}">Post Title</h1>
+            <p><strong>Description:</strong> <span th:text="${post.description}">Post Description</span></p>
+            <p><strong>Posted by:</strong> <span th:text="${post.user.firstname}">Author</span></p>
+            <p><strong>Posted on:</strong> <span th:text="${post.createdOn}">Date</span></p>
 
-		<a href="/" class="back-btn">← Back to Posts</a>
+            <div class="post-content">
+                <h2>Content</h2>
+                <p th:utext="${post.content}">Post content goes here</p> <!-- Use th:utext for HTML content -->
+            </div>
+        </div>
 
-		<!-- Comment Section -->
-		<div class="comment-section">
-			<h2>Leave a Comment</h2>
-			<form th:action="@{/comments}" method="post">
-				<input type="hidden" name="postId" th:value="${post.postId}"> <!-- Hidden postId field -->
+        <!-- Back to Index Button -->
+        <a href="/" class="back-button">Back to Index</a>
 
-				<label for="name">Name:</label>
-				<input type="text" id="name" name="name" placeholder="Your name" required>
+        <!-- Comments Section -->
+        <div class="comment-section">
+            <h2>Comments</h2>
+            
+            <!-- If there are no comments -->
+            <div th:if="${#lists.isEmpty(comments)}" class="no-comments">
+                <p>No comments yet. Be the first to comment!</p>
+            </div>
 
-				<label for="email">Email:</label>
-				<input type="email" id="email" name="email" placeholder="Your email" required>
+            <!-- List of comments -->
+            <ul>
+                <li th:each="comment : ${comments}">
+                    <strong th:text="${comment.name}">Commenter's Name</strong> 
+                    (<span th:text="${comment.email}">Commenter's Email</span>)<br>
+                    <p th:utext="${comment.content}">Comment text goes here</p>
+                    <hr>
+                </li>
+            </ul>
+        </div>
 
-				<label for="comment">Comment:</label>
-				<textarea id="comment" name="comment" placeholder="Your comment" required></textarea>
+        <!-- Add Comment Section -->
+        <div class="add-comment">
+            <h2>Add a Comment</h2>
+            <form action="/comments" method="post">
+                <input type="hidden" name="postId" th:value="${post.postId}">
+                
+                <div>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" name="comment" rows="5" required></textarea>
+                </div>
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
 
-				<button type="submit">Submit Comment</button>
-			</form>
+    </div>
 
-		</div>
-	</div>
 </body>
-
 </html>

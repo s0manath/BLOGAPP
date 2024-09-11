@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import in.somanath.binding.DashbordResponse;
 import in.somanath.binding.PostForm;
+import in.somanath.entity.Comment;
 import in.somanath.entity.Post;
 import in.somanath.entity.User;
+import in.somanath.repo.CommentRepository;
 import in.somanath.repo.PostRepository;
 import in.somanath.repo.UserRepository;
 import in.somanath.service.PostService;
@@ -24,6 +26,9 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private CommentRepository commentRepository;
     
     private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
@@ -126,5 +131,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPostById(Integer postId) {
         return postRepository.findById(postId).orElseThrow();
+    }
+
+    @Override
+    public List<Comment> getCommentsById(Integer postId) {
+        return commentRepository.findByPostPostId(postId);
     }
 }

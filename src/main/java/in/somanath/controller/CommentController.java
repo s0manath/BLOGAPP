@@ -61,20 +61,20 @@ public class CommentController {
 	        // Fetch comments based on the user's posts
 	        List<Comment> comments = commentService.findCommentsByUserId(userId);
 	        
-	        System.out.println("Comments fetched: " + comments.size());
 	        // Add comments to the model to be used in the view
 	        model.addAttribute("comments", comments);
 	        
 	        // Return the Thymeleaf template "comment.html"
 	        return "comment";
 	    }
-	   @GetMapping("/deleteComment/{commentId}")
-	    public String deleteComment(@PathVariable Integer commentId) {
-	        // Delete the comment by ID
-	        commentService.deleteCommentById(commentId);
-	        
-	        // Redirect back to the comment page after deletion
-	        return "redirect:/commentsbyuserid";
-	    }
+	   @GetMapping("/comments/deleteComment/{commentId}")
+	   public String deleteComment(@PathVariable Integer commentId) {
+	       // Delete the comment by ID
+	       commentService.deleteCommentById(commentId);
+	       
+	       // Redirect back to the comment page after deletion
+	       return "redirect:/commentsbyuserid";
+	   }
+
 
 }

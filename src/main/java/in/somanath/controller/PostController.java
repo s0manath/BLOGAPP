@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import in.somanath.binding.DashbordResponse;
 import in.somanath.binding.PostForm;
+import in.somanath.identify.Identifiers;
 import in.somanath.service.PostService;
 import jakarta.servlet.http.HttpSession;
 
@@ -25,16 +26,16 @@ public class PostController {
 
     @GetMapping("/dashboard")
     public String dashboardUnique(Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute(Identifiers.USER_ID);
 
         if (userId == null) {
-            return "redirect:/login"; // Redirect to login if session is invalid
+            return Identifiers.REDIRECT_LOGIN; // Redirect to login if session is invalid
         }
 
         DashbordResponse dashbordData = postService.getDashboardData(userId);
         model.addAttribute("dashboardData", dashbordData);
 
-        return "Dashboard";
+        return Identifiers.DASHBOARD;
     }
 
     @GetMapping("/newpost")
@@ -45,27 +46,27 @@ public class PostController {
 
     @PostMapping("/newpost")
     public String addPost(@ModelAttribute("postForm") PostForm postForm, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute(Identifiers.USER_ID);
 
         if (userId == null) {
-            return "redirect:/login"; // Redirect to login if session is invalid
+            return Identifiers.REDIRECT_LOGIN; // Redirect to login if session is invalid
         }
 
         boolean isPostAdded = postService.addingNewPost(postForm, userId);
 
         if (isPostAdded) {
-            return "redirect:/dashboard";
+            return Identifiers.REDIRECT_DASHBOARD;
         } else {
             model.addAttribute("errorMessage", "Failed to create a new post. Please try again.");
-            return "NewPost";
+            return Identifiers.NEW_POST;
         }
     }
     
     @GetMapping("/posts/edit/{id}")
     public String editPost(@PathVariable("id") Integer postId, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute(Identifiers.USER_ID);
         if (userId == null) {
-            return "redirect:/login"; // Redirect to login if session is invalid
+            return Identifiers.REDIRECT_LOGIN; // Redirect to login if session is invalid
         }
 
         PostForm postForm = postService.getPostById(postId, userId);
@@ -75,8 +76,8 @@ public class PostController {
             return "EditPost"; // Serve the new EditPost page
         } else {
 
-            model.addAttribute("errorMessage", "Post not found or you don't have permission to edit.");
-            return "redirect:/dashboard";
+            model.addAttribute(Identifiers.ERR_MESSAGE, "Post not found or you don't have permission to edit.");
+            return Identifiers.REDIRECT_DASHBOARD;
         }
     }
 
@@ -86,30 +87,30 @@ public class PostController {
     public String updatePost(@ModelAttribute("postForm") PostForm postForm, Model model) {
         Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
-            return "redirect:/login"; // Redirect to login if session is invalid
+            return Identifiers.REDIRECT_LOGIN; // Redirect to login if session is invalid
         }
         boolean isPostUpdated = postService.updatePost(postForm, userId);
         if (isPostUpdated) {
-            return "redirect:/dashboard";
+            return Identifiers.REDIRECT_DASHBOARD;
         } else {
-            model.addAttribute("errorMessage", "Failed to update the post. Please try again.");
-            return "NewPost";
+            model.addAttribute(Identifiers.ERR_MESSAGE, "Failed to update the post. Please try again.");
+            return Identifiers.NEW_POST;
         }
     }
 
     // Delete a post
     @PostMapping("/posts/delete")
     public String deletePost(@RequestParam("postId") Integer postId, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute(Identifiers.USER_ID);
         if (userId == null) {
-            return "redirect:/login"; // Redirect to login if session is invalid
+            return Identifiers.REDIRECT_LOGIN; // Redirect to login if session is invalid
         }
         boolean isDeleted = postService.deletePostById(postId, userId);
         if (isDeleted) {
-            return "redirect:/dashboard";
+            return Identifiers.REDIRECT_DASHBOARD;
         } else {
-            model.addAttribute("errorMessage", "Failed to delete the post.");
-            return "redirect:/dashboard";
+            model.addAttribute(Identifiers.ERR_MESSAGE, "Failed to delete the post.");
+            return Identifiers.REDIRECT_DASHBOARD;
         }
     }
     @GetMapping("/logout")

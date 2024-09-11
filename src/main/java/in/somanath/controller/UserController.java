@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import in.somanath.binding.LoginForm;
 import in.somanath.binding.RegistrationForm;
+import in.somanath.identify.Identifiers;
 import in.somanath.service.UserService;
 import in.somanath.service.exception.EmailAlreadyExistsException;
 import in.somanath.service.exception.InvalidLoginException;
@@ -29,20 +30,20 @@ public class UserController {
 		
 		model.addAttribute("regform", new RegistrationForm());
 		
-		return "Registration";
+		return Identifiers.REGISTRATION;
 	}
 	
 	 @PostMapping("/register")
 	    public String registerUser(@ModelAttribute("regform") RegistrationForm regform, Model model) {
 	        try {
 	            userService.saveUser(regform);
-	            return "redirect:/login"; // Redirect to login page after successful registration
+	            return Identifiers.REDIRECT_LOGIN; // Redirect to login page after successful registration
 	        } catch (EmailAlreadyExistsException e) {
-	            model.addAttribute("error", "Email already exists");
-	            return "Registration";
+	            model.addAttribute(Identifiers.ERROR, "Email already exists");
+	            return Identifiers.REGISTRATION;
 	        } catch (InvalidPasswordException e) {
-	            model.addAttribute("error", "Password must contain at least one unique letter from a to z");
-	            return "Registration";
+	            model.addAttribute(Identifiers.ERROR, "Password must contain at least one unique letter from a to z");
+	            return Identifiers.REGISTRATION;
 	        }
 	    }
 	
@@ -52,7 +53,7 @@ public class UserController {
 		model.addAttribute("loginform", new LoginForm());
 		
 		
-		return"Login";
+		return Identifiers.LOG_IN;
 	}
 	
 	@PostMapping("/login")
@@ -60,17 +61,17 @@ public class UserController {
 	    try {
 	        // Assuming authenticateUser returns the authenticated user's ID
 	        Integer userId = userService.authenticateUser(loginform.getEmail(), loginform.getPassword());
-             System.out.println(userId);
+             
 	        if (userId != null) {  // If the user is authenticated and the ID is not null
 	            session.setAttribute("userId", userId);  // Set userId in session
-	            return "redirect:/dashboard";  // Redirect to dashboard
+	            return Identifiers.REDIRECT_DASHBOARD;  // Redirect to dashboard
 	        } else {
-	            model.addAttribute("error", "Invalid email or password");
-	            return "Login";
+	            model.addAttribute(Identifiers.ERROR, "Invalid email or password");
+	            return Identifiers.LOG_IN;
 	        }
 	    } catch (InvalidLoginException e) {
-	        model.addAttribute("error", e.getMessage());
-	        return "Login";
+	        model.addAttribute(Identifiers.ERROR, e.getMessage());
+	        return Identifiers.LOG_IN;
 	    }
 	}
 
